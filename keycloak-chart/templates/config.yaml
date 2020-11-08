@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-config
+data:
+  SERVER_PORT: "{{ .Values.service.port }}"
+  CONTEXT_PATH: "{{ .Values.keycloak.contextPath }}"
+  DATABASE_URI: {{ printf "jdbc:postgresql://%s/%s?ssl=false" .Values.postgresql.postgresqlHost .Values.postgresql.postgresqlDatabase }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-secret
+type: Opaque
+data:
+  DATABASE_USERNAME: {{ printf "%s" .Values.postgresql.postgresqlUsername | b64enc | quote }}
+  DATABASE_PASSWORD: {{ printf "%s" .Values.postgresql.postgresqlPassword | b64enc | quote }}

@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta1
+kind: Config
+build:
+  tagPolicy:
+    sha256: { }
+  local: {}
+  artifacts:
+    - image: exxbrain/arch-keycloak
+      jib: {}
+deploy:
+  helm:
+    releases:
+      - name: keycloak
+        valuesFiles:
+          - keycloak_values.yaml
+        chartPath: keycloak-chart
+        skipBuildDependencies: true

@@ -1,0 +1,40 @@
+replicaCount: 1
+
+fullnameOverride: "keycloak"
+
+image:
+  name: exxbrain/arch-keycloak
+  pullPolicy: IfNotPresent
+
+metrics:
+  serviceMonitor:
+    enabled: true
+
+keycloak:
+  realm: arch
+  contextPath: /otusapp/dzakharov/auth
+
+service:
+  type: NodePort
+  port: 8000
+
+postgresql:
+  enabled: true
+  postgresqlUsername: postgres
+  postgresqlPassword: "12345"
+  postgresqlDatabase: keycloak
+  postgresqlHost: keycloak-postgresql
+  persistence:
+    size: 0.2Gi
+  service:
+    port: "5432"
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /otusapp/dzakharov/auth/realms/arch/$1
+  hosts:
+    - host: arch.homework
+      paths: [
+          "/otusapp/dzakharov/auth/(.*)"
+      ]

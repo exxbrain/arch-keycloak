@@ -1,0 +1,39 @@
+server:
+  port: ${SERVER_PORT:8083}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
+          - health
+  metrics:
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true
+            percentiles: 0.5,0.95,0.99,1.0
+            percentiles-histogram: true
+
+spring:
+  datasource:
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:}
+    url: ${DATABASE_URI:jdbc:postgresql://localhost:5432/keycloak}
+    driver-class-name: ${DATABASE_DRIVER:org.postgresql.Driver}
+
+keycloak:
+  server:
+    contextPath: /auth
+    adminUser:
+      username: admin
+      password: admin
+    realmImportFile: arch-realm.json
+    connectionsJpa:
+      url: ${spring.datasource.url}
+      user: ${spring.datasource.username}
+      password: ${spring.datasource.password}
+      driver: ${spring.datasource.driver-class-name}

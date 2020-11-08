@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'com.google.cloud.tools.jib' version '2.6.0'
+}
+
+group = 'com.exxbrain'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation ('org.springframework.boot:spring-boot-starter-actuator')
+    implementation ('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation ('org.springframework.boot:spring-boot-starter-web')
+    implementation ('org.springframework.boot:spring-boot-starter-log4j2')
+    implementation ("io.micrometer:micrometer-registry-prometheus")
+    implementation 'org.jboss.resteasy:resteasy-jackson2-provider:3.13.2.Final'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    implementation 'org.keycloak:keycloak-dependencies-server-all:11.0.2'
+    runtimeOnly 'org.postgresql:postgresql'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+configurations.all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    exclude module: 'logback-classic'
+}
+
+test {
+    useJUnitPlatform()
+}

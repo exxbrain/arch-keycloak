@@ -1,0 +1,23 @@
+{{- if .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "keycloak-chart.fullname" . }}
+  labels:
+    {{- include "keycloak-chart.labels" . | nindent 4 }}
+spec:
+  jobLabel: {{ include "keycloak-chart.fullname" . }}
+  namespaceSelector:
+    matchNames:
+      - "{{ $.Release.Namespace }}"
+  selector:
+    matchLabels:
+      {{- include "keycloak-chart.selectorLabels" . | nindent 6 }}
+  endpoints:
+  - interval: 15s
+    port: http
+    path: {{ .Values.keycloak.contextPath }}/realms/{{ .Values.keycloak.realm }}/metrics
+  - interval: 15s
+    port: http
+    path: /actuator/prometheus
+{{- end }}
