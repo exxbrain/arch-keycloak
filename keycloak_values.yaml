@@ -30,7 +30,7 @@ postgresql:
     port: "5432"
 
 ingress:
-  enabled: true
+  enabled: false
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /otusapp/dzakharov/auth/realms/arch/$1
   hosts:

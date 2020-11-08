@@ -27,7 +27,8 @@ spring:
 
 keycloak:
   server:
-    contextPath: /auth
+    contextPath: ${CONTEXT_PATH:/auth}
+
     adminUser:
       username: admin
       password: admin
