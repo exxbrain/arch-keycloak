@@ -1,1 +1,1 @@
-# Embedded Keycloak server chart
+# Embedded Keycloak server with helm chart
